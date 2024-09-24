@@ -51,7 +51,7 @@ import ipdb
 OPENAI_OUT = './openai_out'
 
 def load_secret():
-    with open('secret.yaml') as f:
+    with open('secret.yaml') as f:    #'secret.yaml'各类模型的密钥
         secret = yaml.safe_load(f)
     return secret
 

@@ -14,7 +14,7 @@ import editdistance
 from few_shot_samples import few_shot
 # or import cPickle as pickle
 
-
+# 用GPT将文本转换为提示词
 def gpt_entity_extraction(dataset_name, inst):
     data_obj = torch.load(f"./preprocessed_data/new/{dataset_name}_fixed_sbert.pt", map_location = 'cpu')
     texts = data_obj.raw_texts
@@ -24,14 +24,14 @@ def gpt_entity_extraction(dataset_name, inst):
     results = efficient_openai_text_api(prompts, input_file_name, output_file_name, sp=120, ss=2.5, rewrite=False)
     torch.save(results, f"{dataset_name}_entity.pt")
 
-
+#用google将文本转换为提示词
 def palm_entity_extraction(dataset_name, inst):
     data_obj = torch.load(f"./preprocessed_data/new/{dataset_name}_fixed_sbert.pt", map_location = 'cpu')
     prompts = entity_extraction(data_obj.raw_texts, inst)
     output_path = osp.join('./palm_out', dataset_name)
     outs = google_text_generate_api(output_path, prompts)
     return outs
-
+# 根据不同的数据生成不同的文本提示
 def get_llm_pseudo_label(data_obj, selected_idxs, mapping, name = 'cora', need_class=False, instruction_format = 'XX', all_possible = False, mode="pred"):
     raw_texts = data_obj.raw_texts
     label_names = data_obj.label_names
